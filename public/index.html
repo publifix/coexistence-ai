@@ -1,396 +1,622 @@
-<!doctype html>
-<html lang="es">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>coexistence.ai — Digital marketing &amp; PR staff powered by AI agents</title>
-<meta name="description" content="coexistence.ai builds AI agents that work as your digital marketing and PR staff — content, outreach, social, copy and analytics, always on." />
-<link rel="icon" href="assets/coexistence-logo-final.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>coexistence.ai — Meet your digital marketing &amp; PR staff</title>
+<meta name="description" content="A team of digital workers ready to run your entire marketing and PR strategy. You just follow along — right from your WhatsApp.">
+<link rel="icon" href="assets/coexistence-logo-final.png">
 <style>
-  :root {
-    --color-primary: #4338CA;
-    --color-secondary: #6366F1;
-    --color-accent: #7C3AED;
-    --color-background: #0F172A;
-    --color-foreground: #FFFFFF;
-    --color-card: #192134;
-    --color-card-foreground: #FFFFFF;
-    --color-muted: #131936;
-    --color-muted-foreground: #94A3B8;
-    --color-border: rgba(255, 255, 255, 0.08);
-    --color-ring: #6366F1;
-    --font-heading: "Space Grotesk", system-ui, sans-serif;
-    --font-body: "DM Sans", system-ui, sans-serif;
-    --space-4: 1rem;
-    --space-6: 1.5rem;
-    --space-8: 2rem;
-    --space-12: 3rem;
-    --space-16: 4rem;
-    --space-24: 6rem;
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root{
+    --ink:#111111;
+    --ink-soft:#5c5c5c;
+    --paper:#ffffff;
+    --line:#ececec;
+    --sun:#f8c268;   /* Lesly */
+    --blossom:#e4879c; /* Mich */
+    --lilac:#9286b4;   /* Paulo */
+    --sage:#97bc88;    /* Ron */
+    --mustard:#e5c06f; /* Laura */
   }
 
-  * { box-sizing: border-box; }
+  *{ margin:0; padding:0; box-sizing:border-box; }
 
-  html { scroll-behavior: smooth; }
-
-  body {
-    margin: 0;
-    background: var(--color-background);
-    color: var(--color-foreground);
-    font-family: var(--font-body);
-    font-size: 16px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
+  body{
+    font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
   }
 
-  img { max-width: 100%; display: block; }
-
-  h1, h2, h3 {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    line-height: 1.2;
-    margin: 0;
+  /* ===== NAV ===== */
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 48px;
   }
 
-  a { color: inherit; }
-
-  :focus-visible {
-    outline: 2px solid var(--color-ring);
-    outline-offset: 2px;
+  .logo img{
+    height:38px;
+    width:auto;
+    display:block;
   }
 
-  .container {
-    width: 100%;
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 0 var(--space-6);
+  .menu-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--ink);
+    border:none;
+    border-radius:999px;
+    padding:10px 10px 10px 18px;
+    cursor:pointer;
+  }
+  .menu-btn span.label{
+    color:#fff;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.02em;
+  }
+  .menu-btn .bars{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:#ffffff;
+    align-items:center;
+    justify-content:center;
+  }
+  .menu-btn .bars i{
+    display:block;
+    width:12px;
+    height:2px;
+    background:var(--ink);
+    border-radius:2px;
   }
 
-  /* Header */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--color-border);
+  /* ===== HERO ===== */
+  .hero{
+    max-width:760px;
+    margin:0 auto;
+    padding:28px 24px 32px;
+    text-align:center;
   }
 
-  .nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--space-4) 0;
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-soft);
+    background:#f7f7f7;
+    border-radius:999px;
+    padding:6px 14px 6px 10px;
+    margin-bottom:18px;
+  }
+  .eyebrow .dots{
+    display:flex;
+    gap:3px;
+  }
+  .eyebrow .dots span{
+    width:6px; height:6px; border-radius:50%;
+  }
+  .eyebrow .dots span:nth-child(1){ background:var(--sun); }
+  .eyebrow .dots span:nth-child(2){ background:var(--blossom); }
+  .eyebrow .dots span:nth-child(3){ background:var(--lilac); }
+  .eyebrow .dots span:nth-child(4){ background:var(--sage); }
+
+  h1{
+    font-size:50px;
+    line-height:1.1;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    color:var(--ink);
+    margin-bottom:14px;
   }
 
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 1.15rem;
-    text-decoration: none;
+  .sub{
+    font-size:18px;
+    line-height:1.55;
+    color:var(--ink-soft);
+    max-width:520px;
+    margin:0 auto 26px;
+  }
+  .sub b{ color:var(--ink); font-weight:600; }
+
+  .cta{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--ink);
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    padding:15px 26px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    transition:transform .15s ease;
+  }
+  .cta:hover{ transform:translateY(-1px); }
+  .cta svg{ width:16px; height:16px; }
+
+  .cta-note{
+    display:block;
+    font-size:12px;
+    color:#a3a3a3;
+    margin-top:12px;
   }
 
-  .brand img {
-    height: 32px;
-    width: 32px;
-    border-radius: 8px;
-    object-fit: cover;
+  /* ===== TEAM ROW ===== */
+  .team{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 32px 72px;
+    display:grid;
+    grid-template-columns:repeat(5, minmax(0,1fr));
+    gap:clamp(12px,1.8vw,22px);
   }
 
-  .cta-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 0 1.25rem;
-    border-radius: 10px;
-    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-    color: #FFFFFF;
-    font-weight: 600;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: transform 200ms ease, box-shadow 200ms ease;
+  .worker{
+    display:flex;
+    flex-direction:column;
   }
 
-  .cta-button:hover {
-    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
-    transform: translateY(-1px);
+  .avatar{
+    position:relative;
+    aspect-ratio:3/4;
+    border-radius:20px;
+    overflow:hidden;
+    background:#f2f2f2;
+  }
+  .avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .status{
+    position:absolute;
+    top:12px;
+    right:12px;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#3ecf6b;
+    box-shadow:0 0 0 3px rgba(255,255,255,.85);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .cta-button, html { transition: none; scroll-behavior: auto; }
+  .worker-caption{
+    margin-top:14px;
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+  }
+  .accent-dot{
+    width:8px; height:8px; border-radius:50%;
+    margin-top:6px;
+    flex-shrink:0;
+  }
+  .worker-text{ text-align:left; }
+  .worker-name{
+    font-size:15px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.3;
+  }
+  .worker-role{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:1px;
   }
 
-  /* Hero */
-  .hero {
-    padding: var(--space-24) 0 var(--space-16);
-    text-align: center;
-    position: relative;
-    overflow: clip;
+  .worker:nth-child(1) .accent-dot{ background:var(--sun); }
+  .worker:nth-child(2) .accent-dot{ background:var(--blossom); }
+  .worker:nth-child(3) .accent-dot{ background:var(--lilac); }
+  .worker:nth-child(4) .accent-dot{ background:var(--mustard); }
+  .worker:nth-child(5) .accent-dot{ background:var(--sage); }
+
+  /* ===== responsive ===== */
+  @media (max-width:860px){
+    h1{ font-size:34px; }
+    .nav{ padding:20px 24px; }
+  }
+  @media (max-width:720px){
+    .team{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  }
+  @media (max-width:480px){
+    .hero{ padding:48px 20px 36px; }
+    h1{ font-size:28px; }
+    .menu-btn .label{ display:none; }
+    .logo img{ height:30px; }
+  }
+  /* ===== WORKERS SPLIT SECTION ===== */
+  .workers-section{
+    border-top:1px solid var(--line);
   }
 
-  .hero::before {
-    content: "";
-    position: absolute;
-    inset: -20% -10% auto -10%;
-    height: 480px;
-    background: radial-gradient(closest-side, rgba(124, 58, 237, 0.25), transparent 70%);
-    pointer-events: none;
+  .workers-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    min-height:560px;
   }
 
-  .eyebrow {
-    display: inline-block;
-    padding: 0.4rem 0.9rem;
-    border-radius: 999px;
-    background: var(--color-muted);
-    border: 1px solid var(--color-border);
-    color: var(--color-muted-foreground);
-    font-size: 0.85rem;
-    font-weight: 500;
-    margin-bottom: var(--space-6);
+  .workers-text{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:64px 72px;
   }
 
-  .hero h1 {
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
-    max-width: 820px;
-    margin: 0 auto;
+  .workers-text h2{
+    font-size:36px;
+    line-height:1.15;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    color:var(--ink);
+    margin-bottom:16px;
   }
 
-  .hero h1 .accent {
-    background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  .workers-text p{
+    font-size:17px;
+    line-height:1.6;
+    color:var(--ink-soft);
+    margin-bottom:30px;
+    max-width:400px;
   }
 
-  .hero p {
-    max-width: 620px;
-    margin: var(--space-6) auto 0;
-    color: var(--color-muted-foreground);
-    font-size: 1.125rem;
+  .workers-carousel{
+    background:#fafafa;
+    border-left:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:56px 40px;
   }
 
-  .hero-actions {
-    display: flex;
-    gap: var(--space-4);
-    justify-content: center;
-    margin-top: var(--space-8);
-    flex-wrap: wrap;
+  .carousel-viewport{
+    width:100%;
+    max-width:340px;
+    overflow:hidden;
   }
 
-  .cta-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 0 1.25rem;
-    border-radius: 10px;
-    background: transparent;
-    color: var(--color-foreground);
-    font-weight: 600;
-    text-decoration: none;
-    border: 1px solid var(--color-border);
-    transition: border-color 200ms ease, background 200ms ease;
+  .carousel-track{
+    display:flex;
+    transition:transform .45s cubic-bezier(.65,0,.35,1);
   }
 
-  .cta-secondary:hover {
-    background: var(--color-muted);
-    border-color: var(--color-secondary);
+  .worker-slide{
+    flex:0 0 100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    padding:0 6px;
   }
 
-  .badge-row {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-6);
-    margin-top: var(--space-16);
-    color: var(--color-muted-foreground);
-    font-size: 0.875rem;
-    flex-wrap: wrap;
+  .slide-avatar{
+    width:112px;
+    height:112px;
+    border-radius:50%;
+    overflow:hidden;
+    margin-bottom:20px;
+    box-shadow:0 0 0 5px #ffffff, 0 0 0 6px var(--line);
+  }
+  .slide-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
   }
 
-  /* Sections */
-  section { padding: var(--space-16) 0; }
+  .slide-role-row{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom:14px;
+  }
+  .slide-dot{ width:7px; height:7px; border-radius:50%; }
 
-  .section-head {
-    text-align: center;
-    max-width: 640px;
-    margin: 0 auto var(--space-12);
+  .slide-name{
+    font-size:20px;
+    font-weight:700;
+    color:var(--ink);
+    margin-bottom:2px;
+  }
+  .slide-role{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-soft);
+  }
+  .slide-desc{
+    font-size:14.5px;
+    line-height:1.6;
+    color:var(--ink-soft);
+    max-width:290px;
   }
 
-  .section-head h2 {
-    font-size: clamp(1.75rem, 3vw, 2.25rem);
+  .worker-slide:nth-child(1) .slide-dot{ background:var(--sun); }
+  .worker-slide:nth-child(2) .slide-dot{ background:var(--blossom); }
+  .worker-slide:nth-child(3) .slide-dot{ background:var(--lilac); }
+  .worker-slide:nth-child(4) .slide-dot{ background:var(--mustard); }
+  .worker-slide:nth-child(5) .slide-dot{ background:var(--sage); }
+
+  .carousel-controls{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    margin-top:32px;
   }
 
-  .section-head p {
-    color: var(--color-muted-foreground);
-    margin-top: var(--space-4);
+  .carousel-controls button{
+    width:36px; height:36px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    flex-shrink:0;
+    transition:background .15s ease;
+  }
+  .carousel-controls button:hover{ background:#eee; }
+  .carousel-controls button svg{ width:15px; height:15px; }
+
+  .carousel-dots{
+    display:flex;
+    gap:7px;
+  }
+  .carousel-dots button{
+    width:7px; height:7px;
+    border-radius:50%;
+    border:none;
+    background:#d8d8d8;
+    padding:0;
+    cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .carousel-dots button.active{
+    background:var(--ink);
+    transform:scale(1.3);
   }
 
-  /* Agent grid */
-  .agent-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: var(--space-6);
+  @media (max-width:860px){
+    .workers-grid{ grid-template-columns:minmax(0,1fr); min-height:auto; }
+    .workers-text{
+      padding:56px 24px 40px;
+      align-items:center;
+      text-align:center;
+    }
+    .workers-text p{ max-width:440px; }
+    .workers-carousel{
+      border-left:none;
+      border-top:1px solid var(--line);
+      padding:44px 24px 56px;
+    }
   }
-
-  .agent-card {
-    background: var(--color-card);
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    overflow: hidden;
-    transition: transform 200ms ease, border-color 200ms ease;
-  }
-
-  .agent-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--color-secondary);
-  }
-
-  .agent-card img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    background: var(--color-muted);
-  }
-
-  .agent-card .agent-body {
-    padding: var(--space-6);
-  }
-
-  .agent-card h3 {
-    font-size: 1.05rem;
-  }
-
-  .agent-role {
-    display: inline-block;
-    margin-top: 0.4rem;
-    color: var(--color-secondary);
-    font-size: 0.85rem;
-    font-weight: 600;
-  }
-
-  .agent-card p {
-    margin: var(--space-4) 0 0;
-    color: var(--color-muted-foreground);
-    font-size: 0.9rem;
-  }
-
-  /* Footer */
-  footer {
-    border-top: 1px solid var(--color-border);
-    padding: var(--space-12) 0;
-  }
-
-  .footer-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    color: var(--color-muted-foreground);
-    font-size: 0.875rem;
-  }
-
-  .footer-row a { text-decoration: underline; text-underline-offset: 3px; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="container nav">
-    <a class="brand" href="#top">
-      <img src="assets/coexistence-logo-final.png" alt="" />
-      coexistence.ai
+  <!-- NAV -->
+  <nav class="nav">
+    <a class="logo" href="#" aria-label="coexistence.ai home">
+      <img src="assets/logo-nav.png" alt="coexistence" width="288" height="96">
     </a>
-    <a class="cta-button" href="mailto:media@publifix.net">Solicitar acceso</a>
-  </div>
-</header>
+    <button class="menu-btn" aria-label="Open menu">
+      <span class="label">Menu</span>
+      <span class="bars"><i></i><i></i><i></i></span>
+    </button>
+  </nav>
 
-<main id="top">
+  <!-- HERO -->
   <section class="hero">
-    <div class="container">
-      <span class="eyebrow">Prototipo — en construcción</span>
-      <h1>Tu equipo de <span class="accent">marketing y PR</span>, con personal impulsado por agentes de IA</h1>
-      <p>coexistence.ai combina agentes de IA especializados que investigan, escriben, publican y responden por tu marca — coordinados como un equipo real, disponibles todo el tiempo.</p>
-      <div class="hero-actions">
-        <a class="cta-button" href="mailto:media@publifix.net">Solicitar acceso</a>
-        <a class="cta-secondary" href="#agentes">Conocer al equipo</a>
+    <span class="eyebrow">
+      <span class="dots"><span></span><span></span><span></span><span></span></span>
+      Your team, on standby
+    </span>
+
+    <h1>Meet your new digital marketing &amp; PR staff</h1>
+
+    <p class="sub">
+      A team of digital workers ready to run your entire strategy.
+      You just follow along — right from your <b>WhatsApp</b>.
+    </p>
+
+    <button class="cta">
+      Book a demo
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+    <span class="cta-note">No credit card required</span>
+  </section>
+
+  <!-- TEAM -->
+  <section class="team">
+    <div class="worker">
+      <div class="avatar">
+        <img src="assets/team/lesly.png" alt="Lesly" width="1230" height="1230">
+        <span class="status"></span>
       </div>
-      <div class="badge-row">
-        <span>Estrategia de contenido</span>
-        <span>Relaciones públicas</span>
-        <span>Redes sociales</span>
-        <span>Copywriting de marca</span>
-        <span>Analítica &amp; insights</span>
+      <div class="worker-caption">
+        <span class="accent-dot"></span>
+        <div class="worker-text">
+          <div class="worker-name">Lesly</div>
+          <div class="worker-role">Chief of Staff</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="worker">
+      <div class="avatar">
+        <img src="assets/team/mich.png" alt="Mich" width="1230" height="1230">
+        <span class="status"></span>
+      </div>
+      <div class="worker-caption">
+        <span class="accent-dot"></span>
+        <div class="worker-text">
+          <div class="worker-name">Mich</div>
+          <div class="worker-role">Community Manager</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="worker">
+      <div class="avatar">
+        <img src="assets/team/paulo.png" alt="Paulo" width="1230" height="1230">
+        <span class="status"></span>
+      </div>
+      <div class="worker-caption">
+        <span class="accent-dot"></span>
+        <div class="worker-text">
+          <div class="worker-name">Paulo</div>
+          <div class="worker-role">Account Manager</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="worker">
+      <div class="avatar">
+        <img src="assets/team/laura.png" alt="Laura" width="1230" height="1230">
+        <span class="status"></span>
+      </div>
+      <div class="worker-caption">
+        <span class="accent-dot"></span>
+        <div class="worker-text">
+          <div class="worker-name">Laura</div>
+          <div class="worker-role">Graphic Designer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="worker">
+      <div class="avatar">
+        <img src="assets/team/ron.png" alt="Ron" width="1230" height="1230">
+        <span class="status"></span>
+      </div>
+      <div class="worker-caption">
+        <span class="accent-dot"></span>
+        <div class="worker-text">
+          <div class="worker-name">Ron</div>
+          <div class="worker-role">Traffic Manager</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="agentes">
-    <div class="container">
-      <div class="section-head">
-        <h2>Conoce al equipo</h2>
-        <p>Cada agente cubre una función especializada del departamento de marketing y PR, trabajando en conjunto con tu equipo humano.</p>
+  <!-- WORKERS SPLIT SECTION -->
+  <section class="workers-section">
+    <div class="workers-grid">
+
+      <div class="workers-text">
+        <h2>Meet your digital marketing team</h2>
+        <p>Each one is built for a specific job, not a generic assistant. They work 24/7, follow your brand voice exactly, and hand off finished work — not drafts you have to fix.</p>
+        <button class="cta">
+          Get a live demo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
       </div>
-      <div class="agent-grid">
-        <article class="agent-card">
-          <img src="assets/agent-1.png" alt="Agente de IA — Estrategia de contenido" loading="lazy" width="600" height="600" />
-          <div class="agent-body">
-            <h3>Content Strategist</h3>
-            <span class="agent-role">Estrategia de contenido</span>
-            <p>Investiga tendencias y define el calendario editorial alineado a tus objetivos de marca.</p>
+
+      <div class="workers-carousel">
+        <div class="carousel-viewport">
+          <div class="carousel-track" id="workersTrack">
+
+            <div class="worker-slide">
+              <div class="slide-avatar"><img src="assets/team/lesly.png" alt="Lesly" width="1230" height="1230"></div>
+              <div class="slide-role-row"><span class="slide-dot"></span><span class="slide-role">Chief of Staff</span></div>
+              <div class="slide-name">Lesly</div>
+              <p class="slide-desc">Tracks every project in real time and messages you directly on WhatsApp the moment something needs your attention.</p>
+            </div>
+
+            <div class="worker-slide">
+              <div class="slide-avatar"><img src="assets/team/mich.png" alt="Mich" width="1230" height="1230"></div>
+              <div class="slide-role-row"><span class="slide-dot"></span><span class="slide-role">Community Manager</span></div>
+              <div class="slide-name">Mich</div>
+              <p class="slide-desc">Plans, writes, and schedules posts across every platform, then replies to comments and DMs in your brand voice.</p>
+            </div>
+
+            <div class="worker-slide">
+              <div class="slide-avatar"><img src="assets/team/paulo.png" alt="Paulo" width="1230" height="1230"></div>
+              <div class="slide-role-row"><span class="slide-dot"></span><span class="slide-role">Account Manager</span></div>
+              <div class="slide-name">Paulo</div>
+              <p class="slide-desc">Coordinates every deliverable across the team and speaks directly with you whenever a decision or approval is needed.</p>
+            </div>
+
+            <div class="worker-slide">
+              <div class="slide-avatar"><img src="assets/team/laura.png" alt="Laura" width="1230" height="1230"></div>
+              <div class="slide-role-row"><span class="slide-dot"></span><span class="slide-role">Graphic Designer</span></div>
+              <div class="slide-name">Laura</div>
+              <p class="slide-desc">Turns a single brief into on-brand visuals — social creative, ad variants, decks — sized for every channel.</p>
+            </div>
+
+            <div class="worker-slide">
+              <div class="slide-avatar"><img src="assets/team/ron.png" alt="Ron" width="1230" height="1230"></div>
+              <div class="slide-role-row"><span class="slide-dot"></span><span class="slide-role">Traffic Manager</span></div>
+              <div class="slide-name">Ron</div>
+              <p class="slide-desc">Runs paid campaigns across platforms and reallocates budget toward what's converting, adjusting bids and spend every day.</p>
+            </div>
+
           </div>
-        </article>
-        <article class="agent-card">
-          <img src="assets/agent-2.png" alt="Agente de IA — Relaciones públicas" loading="lazy" width="600" height="600" />
-          <div class="agent-body">
-            <h3>PR Outreach</h3>
-            <span class="agent-role">Relaciones públicas</span>
-            <p>Identifica medios y periodistas relevantes, y redacta comunicados y pitches personalizados.</p>
-          </div>
-        </article>
-        <article class="agent-card">
-          <img src="assets/agent-3.png" alt="Agente de IA — Redes sociales" loading="lazy" width="600" height="600" />
-          <div class="agent-body">
-            <h3>Social Media Manager</h3>
-            <span class="agent-role">Redes sociales</span>
-            <p>Programa y adapta contenido por plataforma, y responde a la comunidad con el tono de tu marca.</p>
-          </div>
-        </article>
-        <article class="agent-card">
-          <img src="assets/agent-4.png" alt="Agente de IA — Copywriting de marca" loading="lazy" width="600" height="600" />
-          <div class="agent-body">
-            <h3>Brand Copywriter</h3>
-            <span class="agent-role">Copywriting</span>
-            <p>Escribe landing pages, emails y anuncios manteniendo consistencia de voz en cada canal.</p>
-          </div>
-        </article>
-        <article class="agent-card">
-          <img src="assets/agent-5.png" alt="Agente de IA — Analítica e insights" loading="lazy" width="600" height="600" />
-          <div class="agent-body">
-            <h3>Analytics &amp; Insights</h3>
-            <span class="agent-role">Analítica</span>
-            <p>Mide el desempeño de campañas y traduce datos en próximas acciones concretas.</p>
-          </div>
-        </article>
+        </div>
+
+        <div class="carousel-controls">
+          <button id="prevBtn" aria-label="Previous">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div class="carousel-dots" id="workersDots"></div>
+          <button id="nextBtn" aria-label="Next">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
       </div>
+
     </div>
   </section>
-</main>
 
-<footer>
-  <div class="container footer-row">
-    <span>&copy; 2026 coexistence.ai — prototipo</span>
-    <a href="mailto:media@publifix.net">media@publifix.net</a>
-  </div>
-</footer>
+  <script>
+    (function(){
+      const track = document.getElementById('workersTrack');
+      const slides = track.querySelectorAll('.worker-slide');
+      const dotsWrap = document.getElementById('workersDots');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      let index = 0;
+
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goTo(i));
+        dotsWrap.appendChild(dot);
+      });
+      const dots = dotsWrap.querySelectorAll('button');
+
+      function goTo(i){
+        index = (i + slides.length) % slides.length;
+        track.style.transform = `translateX(-${index * 100}%)`;
+        dots.forEach((d, di) => d.classList.toggle('active', di === index));
+      }
+
+      prevBtn.addEventListener('click', () => goTo(index - 1));
+      nextBtn.addEventListener('click', () => goTo(index + 1));
+
+      // basic swipe support for touch/mobile
+      let startX = 0;
+      track.addEventListener('touchstart', e => startX = e.touches[0].clientX, { passive:true });
+      track.addEventListener('touchend', e => {
+        const diff = e.changedTouches[0].clientX - startX;
+        if (Math.abs(diff) > 40) diff < 0 ? goTo(index + 1) : goTo(index - 1);
+      });
+    })();
+  </script>
 
 </body>
 </html>
