@@ -562,6 +562,35 @@
   .chat-bubble[data-sender="Lesly"] .bubble-sender{ color:var(--sun); }
   .chat-bubble[data-sender="Laura"] .bubble-sender{ color:var(--mustard); }
 
+  /* typing indicator: reused/repositioned by JS right before the next incoming bubble */
+  /* hidden by default (no-JS/no-GSAP fallback never shows an indicator
+     with a blank name); JS explicitly reveals it when orchestrating
+     the conversation timeline */
+  .typing-bubble{ display:none; padding-bottom:12px; }
+  .typing-dots{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    height:16px;
+    margin-top:2px;
+  }
+  .typing-dots i{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#9a9a9a;
+    animation:typing-bounce 1.2s ease-in-out infinite;
+  }
+  .typing-dots i:nth-child(2){ animation-delay:0.15s; }
+  .typing-dots i:nth-child(3){ animation-delay:0.3s; }
+  @keyframes typing-bounce{
+    0%, 60%, 100%{ transform:translateY(0); opacity:.5; }
+    30%{ transform:translateY(-4px); opacity:1; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .typing-dots i{ animation:none; opacity:.7; }
+  }
+
   .bubble-thumb{
     display:flex;
     align-items:center;
@@ -793,20 +822,24 @@
             </div>
           </div>
           <div class="chat-body" id="chatBody">
-            <div class="chat-bubble out">Launch the Otoño campaign this week 🍂</div>
-            <div class="chat-bubble in" data-sender="Lesly">
+            <div class="chat-bubble out" data-msg>Launch the Otoño campaign this week 🍂</div>
+            <div class="chat-bubble in" data-sender="Lesly" data-msg>
               <span class="bubble-sender">Lesly</span>On it — Mich's drafting captions, Laura's on visuals.
             </div>
-            <div class="chat-bubble in" data-sender="Laura">
+            <div class="chat-bubble in" data-sender="Laura" data-msg>
               <span class="bubble-sender">Laura</span>
               <span class="bubble-thumb" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
               </span>
               Here's the first visual for review.
             </div>
-            <div class="chat-bubble out">Love it. Approved ✅</div>
-            <div class="chat-bubble in" data-sender="Lesly">
+            <div class="chat-bubble out" data-msg>Love it. Approved ✅</div>
+            <div class="chat-bubble in" data-sender="Lesly" data-msg>
               <span class="bubble-sender">Lesly</span>Live Thursday 9am. I'll message you the results Friday.
+            </div>
+            <div class="chat-bubble in typing-bubble" id="typingIndicator" aria-hidden="true">
+              <span class="bubble-sender" id="typingSender"></span>
+              <span class="typing-dots"><i></i><i></i><i></i></span>
             </div>
           </div>
         </div>
@@ -937,19 +970,78 @@
 
       const section = document.getElementById('whatsapp');
       const card = document.getElementById('chatCard');
-      const bubbles = document.querySelectorAll('#chatBody .chat-bubble');
+      const chatBody = document.getElementById('chatBody');
+      const bubbles = document.querySelectorAll('#chatBody .chat-bubble[data-msg]');
       const text = document.getElementById('whatsappText');
+      const typing = document.getElementById('typingIndicator');
+      const typingSender = document.getElementById('typingSender');
+
+      // Lock the card's height at its fully-loaded size (measured while
+      // every bubble is still visible) before hiding anything, so the
+      // conversation filling in over ~10s never reflows/shifts the card
+      // or the centered grid row around it.
+      chatBody.style.minHeight = chatBody.scrollHeight + 'px';
+
+      // Bubbles + typing indicator start hidden; the conversation timeline
+      // below reveals them one at a time so the thread fills in like a
+      // real, still-arriving conversation. Hidden entirely via JS (the
+      // stylesheet only hides the typing bubble) so a script/CDN failure
+      // just leaves the real messages visible instead of blank.
+      bubbles.forEach(b => { b.style.display = 'none'; });
+
+      function wait(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+      async function revealBubble(el, delay){
+        await wait(delay);
+        el.style.display = 'block';
+        await new Promise(r => gsap.fromTo(el,
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out', onComplete: r }
+        ));
+      }
+
+      async function showTyping(sender, beforeEl, delay, holdTime){
+        await wait(delay);
+        typingSender.textContent = sender;
+        typing.setAttribute('data-sender', sender);
+        chatBody.insertBefore(typing, beforeEl);
+        typing.style.display = 'block';
+        await new Promise(r => gsap.fromTo(typing,
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out', onComplete: r }
+        ));
+        await wait(holdTime);
+        await new Promise(r => gsap.to(typing, {
+          opacity: 0, y: 6, duration: 0.2, ease: 'power1.in',
+          onComplete: () => { typing.style.display = 'none'; r(); }
+        }));
+      }
+
+      async function playConversation(){
+        await revealBubble(bubbles[0], 250);                        // outgoing: kicks off the thread
+
+        await showTyping('Lesly', bubbles[1], 500, 1100);
+        await revealBubble(bubbles[1], 100);
+
+        await showTyping('Laura', bubbles[2], 500, 1300);
+        await revealBubble(bubbles[2], 100);
+
+        await revealBubble(bubbles[3], 700);                        // outgoing: quick approval, no typing shown
+
+        await showTyping('Lesly', bubbles[4], 500, 1000);
+        await revealBubble(bubbles[4], 100);
+      }
 
       gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: 'top 80%',
-          toggleActions: 'play none none none', // fire once, never reverse
+          toggleActions: 'play none none none', // fire once, never reverse, no pin/scrub
         }
       })
-      .from(card, { opacity: 0, y: 20, duration: 0.5, ease: 'power2.out' })
-      .from(bubbles, { opacity: 0, y: 16, duration: 0.45, stagger: 0.08, ease: 'power2.out' }, '-=0.15')
-      .from(text, { opacity: 0, y: 16, duration: 0.5, ease: 'power2.out' }, '<0.15');
+      .from(card, { opacity: 0, scale: 0.8, y: 40, duration: 0.7, ease: 'back.out(1.4)' })
+      .from(text, { opacity: 0, y: 16, duration: 0.5, ease: 'power2.out' }, '-=0.25')
+      .call(() => playConversation());
     })();
   </script>
 
