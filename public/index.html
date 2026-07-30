@@ -427,6 +427,169 @@
       min-height:0;
     }
   }
+
+  /* ===== WHATSAPP SECTION ===== */
+  /* Deliberate dark "moment" in an otherwise white site. One-time reveal
+     on scroll-into-view (GSAP + ScrollTrigger, no pin/scrub). */
+  .whatsapp-section{
+    background:#111111;
+    overflow:hidden;
+  }
+
+  .whatsapp-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    align-items:center;
+    gap:64px;
+    min-height:100vh;
+    max-width:1120px;
+    margin:0 auto;
+    padding:96px 48px;
+  }
+
+  .whatsapp-text-col{ order:2; }
+  .whatsapp-chat-col{
+    order:1;
+    display:flex;
+    justify-content:center;
+  }
+
+  .eyebrow-dark{
+    background:rgba(255,255,255,0.08);
+    color:#cfcfcf;
+  }
+
+  .whatsapp-text-col h2{
+    font-size:36px;
+    line-height:1.15;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    color:#ffffff;
+    margin-bottom:16px;
+  }
+
+  .whatsapp-text-col p{
+    font-size:17px;
+    line-height:1.6;
+    color:#ffffff;
+    max-width:440px;
+  }
+
+  /* --- chat card --- */
+  .chat-card{
+    width:100%;
+    max-width:340px;
+    background:#0b0b0b;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.08);
+    overflow:hidden;
+    box-shadow:0 24px 64px rgba(0,0,0,0.45);
+  }
+
+  .chat-header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:16px 20px;
+    background:#1c3b34;
+  }
+
+  .chat-avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    object-fit:cover;
+    flex-shrink:0;
+  }
+
+  .chat-header-text{ line-height:1.3; }
+  .chat-name{
+    font-size:14px;
+    font-weight:700;
+    color:#ffffff;
+  }
+  .chat-status{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    color:#a9c9c1;
+    margin-top:2px;
+  }
+  .chat-status::before{
+    content:"";
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#3ecf6b;
+  }
+
+  .chat-body{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    padding:20px;
+    background:#e9e2d8;
+    min-height:360px;
+  }
+
+  .chat-bubble{
+    max-width:82%;
+    padding:10px 12px;
+    border-radius:12px;
+    font-size:13.5px;
+    line-height:1.45;
+  }
+  .chat-bubble.out{
+    align-self:flex-end;
+    background:#d3f2c2;
+    color:#111111;
+    border-bottom-right-radius:4px;
+  }
+  .chat-bubble.in{
+    align-self:flex-start;
+    background:#ffffff;
+    color:#111111;
+    border-bottom-left-radius:4px;
+  }
+
+  .bubble-sender{
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:2px;
+  }
+  .chat-bubble[data-sender="Lesly"] .bubble-sender{ color:var(--sun); }
+  .chat-bubble[data-sender="Laura"] .bubble-sender{ color:var(--mustard); }
+
+  .bubble-thumb{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    aspect-ratio:16/10;
+    border-radius:8px;
+    margin-bottom:8px;
+    background:linear-gradient(135deg, var(--mustard), var(--sun));
+  }
+  .bubble-thumb svg{
+    width:28px;
+    height:28px;
+    color:rgba(17,17,17,0.45);
+  }
+
+  @media (max-width:860px){
+    .whatsapp-grid{
+      grid-template-columns:1fr;
+      min-height:auto;
+      padding:64px 24px;
+      gap:40px;
+    }
+    .whatsapp-text-col{ order:1; text-align:center; }
+    .whatsapp-chat-col{ order:2; }
+    .whatsapp-text-col p{ margin:0 auto; }
+    .chat-card{ max-width:300px; }
+  }
 </style>
 </head>
 <body>
@@ -607,6 +770,53 @@
     </div>
   </section>
 
+  <!-- WHATSAPP SECTION -->
+  <section class="whatsapp-section" id="whatsapp">
+    <div class="whatsapp-grid">
+
+      <div class="whatsapp-text-col" id="whatsappText">
+        <span class="eyebrow eyebrow-dark">
+          <span class="dots"><span></span><span></span><span></span><span></span></span>
+          How it works
+        </span>
+        <h2>Everything happens on the app you already use</h2>
+        <p>No new dashboard to check. Give instructions, review drafts, and approve finished work — all in the same WhatsApp thread you already have open.</p>
+      </div>
+
+      <div class="whatsapp-chat-col">
+        <div class="chat-card" id="chatCard">
+          <div class="chat-header">
+            <img class="chat-avatar" src="assets/team/lesly.png" alt="Lesly" width="1230" height="1230">
+            <div class="chat-header-text">
+              <div class="chat-name">Lesly</div>
+              <div class="chat-status">online</div>
+            </div>
+          </div>
+          <div class="chat-body" id="chatBody">
+            <div class="chat-bubble out">Launch the Otoño campaign this week 🍂</div>
+            <div class="chat-bubble in" data-sender="Lesly">
+              <span class="bubble-sender">Lesly</span>On it — Mich's drafting captions, Laura's on visuals.
+            </div>
+            <div class="chat-bubble in" data-sender="Laura">
+              <span class="bubble-sender">Laura</span>
+              <span class="bubble-thumb" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+              </span>
+              Here's the first visual for review.
+            </div>
+            <div class="chat-bubble out">Love it. Approved ✅</div>
+            <div class="chat-bubble in" data-sender="Lesly">
+              <span class="bubble-sender">Lesly</span>Live Thursday 9am. I'll message you the results Friday.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <script src="assets/vendor/gsap/gsap.min.js"></script>
+  <script src="assets/vendor/gsap/ScrollTrigger.min.js"></script>
   <script>
     (function(){
       const track = document.getElementById('workersTrack');
@@ -715,6 +925,31 @@
         syncScrub();
         desktopQuery.addEventListener('change', syncScrub);
       }
+    })();
+  </script>
+
+  <script>
+    (function(){
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion || !window.gsap || !window.ScrollTrigger) return;
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      const section = document.getElementById('whatsapp');
+      const card = document.getElementById('chatCard');
+      const bubbles = document.querySelectorAll('#chatBody .chat-bubble');
+      const text = document.getElementById('whatsappText');
+
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 80%',
+          toggleActions: 'play none none none', // fire once, never reverse
+        }
+      })
+      .from(card, { opacity: 0, y: 20, duration: 0.5, ease: 'power2.out' })
+      .from(bubbles, { opacity: 0, y: 16, duration: 0.45, stagger: 0.08, ease: 'power2.out' }, '-=0.15')
+      .from(text, { opacity: 0, y: 16, duration: 0.5, ease: 'power2.out' }, '<0.15');
     })();
   </script>
 
