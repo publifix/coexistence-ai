@@ -234,6 +234,22 @@
     overflow:hidden;
     background:#f2f2f2;
   }
+  .avatar-skeleton{
+    background:linear-gradient(100deg, #eee 30%, #f7f7f7 50%, #eee 70%);
+    background-size:200% 100%;
+    animation:avatar-shimmer 1.4s ease-in-out infinite;
+  }
+  .avatar-skeleton.is-loaded{
+    animation:none;
+    background:#f2f2f2;
+  }
+  @keyframes avatar-shimmer{
+    0%{ background-position:200% 0; }
+    100%{ background-position:-200% 0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .avatar-skeleton{ animation:none; }
+  }
   .avatar img,
   .avatar video{
     width:100%;
@@ -276,11 +292,11 @@
     margin-top:1px;
   }
 
-  .worker:nth-child(1) .accent-dot{ background:var(--sun); }
-  .worker:nth-child(2) .accent-dot{ background:var(--blossom); }
-  .worker:nth-child(3) .accent-dot{ background:var(--lilac); }
-  .worker:nth-child(4) .accent-dot{ background:var(--mustard); }
-  .worker:nth-child(5) .accent-dot{ background:var(--sage); }
+  .worker:nth-child(1) .accent-dot{ background:var(--blossom); } /* Mich */
+  .worker:nth-child(2) .accent-dot{ background:var(--sun); }     /* Lesly */
+  .worker:nth-child(3) .accent-dot{ background:var(--lilac); }   /* Paulo */
+  .worker:nth-child(4) .accent-dot{ background:var(--mustard); } /* Laura */
+  .worker:nth-child(5) .accent-dot{ background:var(--sage); }    /* Ron */
 
   /* ===== responsive ===== */
   @media (max-width:860px){
@@ -1139,22 +1155,8 @@
   <!-- TEAM -->
   <section class="team" id="team-row">
     <div class="worker">
-      <div class="avatar">
-        <img src="assets/team/lesly.png" alt="Lesly" width="1230" height="1230">
-        <span class="status"></span>
-      </div>
-      <div class="worker-caption">
-        <span class="accent-dot"></span>
-        <div class="worker-text">
-          <div class="worker-name">Lesly</div>
-          <div class="worker-role">Chief of Staff</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="worker">
-      <div class="avatar">
-        <video src="assets/team/mich-video.mp4" poster="assets/team/mich.png" autoplay muted loop playsinline aria-label="Mich"></video>
+      <div class="avatar avatar-skeleton">
+        <video poster="assets/team/mich-video-poster.jpg" data-src="assets/team/mich-video.mp4" muted loop playsinline preload="metadata" aria-label="Mich" width="480" height="480"></video>
         <span class="status"></span>
       </div>
       <div class="worker-caption">
@@ -1167,8 +1169,22 @@
     </div>
 
     <div class="worker">
-      <div class="avatar">
-        <img src="assets/team/paulo.png" alt="Paulo" width="1230" height="1230">
+      <div class="avatar avatar-skeleton">
+        <video poster="assets/team/lesly-video-poster.jpg" data-src="assets/team/lesly-video.mp4" muted loop playsinline preload="metadata" aria-label="Lesly" width="480" height="480"></video>
+        <span class="status"></span>
+      </div>
+      <div class="worker-caption">
+        <span class="accent-dot"></span>
+        <div class="worker-text">
+          <div class="worker-name">Lesly</div>
+          <div class="worker-role">Chief of Staff</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="worker">
+      <div class="avatar avatar-skeleton">
+        <video poster="assets/team/paulo-video-poster.jpg" data-src="assets/team/paulo-video.mp4" muted loop playsinline preload="metadata" aria-label="Paulo" width="480" height="480"></video>
         <span class="status"></span>
       </div>
       <div class="worker-caption">
@@ -1181,8 +1197,8 @@
     </div>
 
     <div class="worker">
-      <div class="avatar">
-        <img src="assets/team/laura.png" alt="Laura" width="1230" height="1230">
+      <div class="avatar avatar-skeleton">
+        <video poster="assets/team/laura-video-poster.jpg" data-src="assets/team/laura-video.mp4" muted loop playsinline preload="metadata" aria-label="Laura" width="480" height="480"></video>
         <span class="status"></span>
       </div>
       <div class="worker-caption">
@@ -1195,8 +1211,8 @@
     </div>
 
     <div class="worker">
-      <div class="avatar">
-        <img src="assets/team/ron.png" alt="Ron" width="1230" height="1230">
+      <div class="avatar avatar-skeleton">
+        <video poster="assets/team/ron-video-poster.jpg" data-src="assets/team/ron-video.mp4" muted loop playsinline preload="metadata" aria-label="Ron" width="480" height="480"></video>
         <span class="status"></span>
       </div>
       <div class="worker-caption">
@@ -1783,14 +1799,49 @@
 
   <script>
     (function(){
-      // Looping avatar video: respect prefers-reduced-motion by freezing
-      // on the poster frame instead of autoplaying an infinite loop.
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.querySelectorAll('.avatar video').forEach(v => {
-          v.removeAttribute('autoplay');
-          v.pause();
+      // Hero avatar videos: lazy-loaded (src only set once each one is
+      // about to be visible), paused while off-screen, and skipped
+      // entirely under prefers-reduced-motion (poster frame only).
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const avatars = document.querySelectorAll('.avatar-skeleton');
+
+      // Skeleton: swap the shimmer for the real background as soon as
+      // each poster image has actually finished loading.
+      avatars.forEach(avatar => {
+        const video = avatar.querySelector('video');
+        if (!video || !video.poster) { avatar.classList.add('is-loaded'); return; }
+        const preloadImg = new Image();
+        preloadImg.onload = preloadImg.onerror = () => avatar.classList.add('is-loaded');
+        preloadImg.src = video.poster;
+      });
+
+      if (reduceMotion) return;
+
+      if (!('IntersectionObserver' in window)) {
+        // No IntersectionObserver support: just load and play everything.
+        document.querySelectorAll('.avatar video[data-src]').forEach(v => {
+          v.src = v.dataset.src;
+          v.play().catch(() => {});
         });
+        return;
       }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            if (video.dataset.src) {
+              video.src = video.dataset.src;
+              delete video.dataset.src;
+            }
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      }, { rootMargin: '200px 0px' });
+
+      document.querySelectorAll('.avatar video[data-src]').forEach(v => io.observe(v));
     })();
   </script>
 
